@@ -10,7 +10,7 @@ const mimeTypes = {
   '.js':   'text/javascript',
   '.html': 'text/html',
   '.css':  'text/css'
-}
+};
 
 const exceptions = [
   'a', 'an', 'the',
@@ -33,7 +33,7 @@ const exceptions = [
   'go', 'went', 'gone', 'going',
   'why', 'what', 'who', 'where', 'when', 'because', 'enough', 'ago',
   "that\'s", "we\'re", "let\'s", "we\'ve", "it\'s", "what\'s", "don\'t", "i\'ve", "didn\'t", "can\'t"
-]
+];
 
 let fileCounter  = 0
   , wordsArr     = []
@@ -44,29 +44,28 @@ let opts = {
   lock:   false,  // lock to prevent the executing of the function 'readDir()' for the second time
   result: false,  // the existence of the result executing of the function 'readDir()'
   opened: false   // whether the browser was opened
-}
+};
 
 // Run the node server
 function show() {
 
   http.createServer(function onRequest(request, response) {
   
-    var pathname = url.parse(request.url).pathname;
+    let pathname = url.parse(request.url).pathname;
     
     if (pathname == '/' || pathname == '/js/common.js') {
       if (pathname == '/') {
         pathname = '/index.html';
       }
 
-      var extname = path.extname(pathname)
-        , mimeType = mimeTypes[path.extname(pathname)];
+      const mimeType = mimeTypes[path.extname(pathname)];
 
       pathname = pathname.substring(1, pathname.length);
 
       fs.readFile(pathname, 'utf8', (error, data) => {
   
         if (error) {
-          process.stdout.write(`Could not find or open file ${pathname} for reading\n`);
+          process.stdout.write(`Could not find or open file ${ pathname } for reading\n`);
         } else {
           response.writeHead(200, {'Content-Type': mimeType});
           response.end(data);
@@ -74,15 +73,12 @@ function show() {
       });
 
     } else if (pathname == '/data.json') {
-      let data = JSON.stringify(filteredArr);
-      response.end(data);
+      response.end(JSON.stringify(filteredArr));
     } else {
       response.end('Page not found');
     }
 
-  }).listen(8080, () => {
-    process.stdout.write(`Server is listening on port 8080...\n`);
-  });
+  }).listen(8080, () => process.stdout.write(`Server is listening on port 8080...\n`));
 }
 
 // The main function
@@ -94,42 +90,40 @@ function calc() {
     , arr       = [];
 
   // Loading bar in command line
-  function loading(c, t) {
-    let percent = Math.round(c / t * 100);
+  const loading = (c, t) => {
+    const percent = Math.round(c / t * 100);
 
-    function bar(p) {
-      let r = '';
+    const bar = p => {
       if (p < 10) {
-        r = '|>---------|';
+        return '|>---------|';
       } else if (p >= 10 && p < 20) {
-        r = '|=>--------|'
+        return '|=>--------|'
       } else if (p >= 20 && p < 30) {
-        r = '|==>-------|'
+        return '|==>-------|'
       } else if (p >= 30 && p < 40) {
-        r = '|===>------|'
+        return '|===>------|'
       } else if (p >= 40 && p < 50) {
-        r = '|====>-----|'
+        return '|====>-----|'
       } else if (p >= 50 && p < 60) {
-        r = '|=====>----|'
+        return'|=====>----|'
       } else if (p >= 60 && p < 70) {
-        r = '|======>---|'
+        return '|======>---|'
       } else if (p >= 70 && p < 80) {
-        r = '|=======>--|'
+        return '|=======>--|'
       } else if (p >= 80 && p < 90) {
-        r = '|========>-|'
+        return '|========>-|'
       } else if (p >= 90 && p < 100) {
-        r = '|=========>|'
+        return '|=========>|'
       } else {
-        r = '|==========|'
+        return '|==========|'
       }
-      return r;
     }
 
-    return `${bar(percent)} ${percent}%\r`;    
+    return `${ bar(percent) } ${ percent }%\r`;    
   }
 
-  process.stdout.write(`Total words: ${wordsArr.length}\n`);
-  process.stdout.write(`Unique words: ${uniqWords.length}\n\n`);
+  process.stdout.write(`Total words: ${ wordsArr.length }\n`);
+  process.stdout.write(`Unique words: ${ uniqWords.length }\n\n`);
 
   uniqWords.forEach( (uniqWord, i1) => {
 
@@ -139,9 +133,9 @@ function calc() {
 
     wordsArr.forEach( (wordArr, i2) => {
 
-      let word     = wordArr[0]
-        , sentence = wordArr[1]
-        , file     = wordArr[2];
+      const word     = wordArr[0]
+          , sentence = wordArr[1]
+          , file     = wordArr[2];
 
       // Whether the unique word is equal to the word from 'wordsArr' and not in 'exceptions' list
       if (uniqWord == word && _.indexOf(exceptions, uniqWord) == -1) {
@@ -151,7 +145,7 @@ function calc() {
       }
     });
 
-    process.stdout.write(`Word Count: ${loading(i1, uniqWords.length-1)}`)
+    process.stdout.write(`Word Count: ${ loading(i1, uniqWords.length-1) }`)
 
     // Select only unique file names
     files = _.uniq(files);
@@ -163,15 +157,14 @@ function calc() {
   });
 
   // Sort the 'arr' array by the most frequently used words ('wordCounter')
-  arr = arr.sort((a,b) => { return b[0]-a[0] });
+  arr = arr.sort( (a,b) => b[0]-a[0] );
 
   // Get only words that are limited by 'opts.limit'
   filteredArr = arr.slice(0, opts.limit);
 
   opts.result = true;
 
-  process.stdout.write(`\n\n`);
-  process.stdout.write(`${opts.limit} the most frequently used words: ${_.unzip(filteredArr)[1].join(', ')}\n\n`);
+  process.stdout.write(`\n\n${ opts.limit } the most frequently used words: ${ _.unzip(filteredArr)[1].join(', ') }\n\n`);
   process.stdout.write(`\nJust press 'Enter' to see the result\n`);
 
 }
@@ -182,34 +175,34 @@ function readDir(files) {
   files.forEach( (file, i) => {
 
     // Path to the 'file'
-    const filePath = docsDir + '/' + file;
+    const filePath = `${ docsDir }/${ file }`;
     
     // Read 'file' using 'filePath'
     fs.readFile(filePath, (error, data) => {
 
       if (error) {
-        process.stdout.write(`${error}\n`);
+        process.stdout.write(`${ error }\n`);
 
       } else {
         // text - the whole text of the 'file' without '\n', '\t' and '\r' signs
         // sentences - 'text' splited in sentences
-        let text      = data.toString().replace(/[\n\t\r]/g,'').replace(/U.S./g,'US')
-          , sentences = text.replace(/\. /g,'.').replace(/ +(?= )/g,'').split('.');
+        let text      = data.toString().replace(/[\n\t\r]/g, '').replace(/U.S./g, 'US')
+          , sentences = text.replace(/\. /g,'.').replace(/ +(?= )/g, '').split('.');
 
         // Revome the last always empty sentence
         sentences.splice(-1);
-        process.stdout.write(`Reading a file ${file}...\n`);
-        process.stdout.write(`${sentences.length} sentences found\n\n`);
+        process.stdout.write(`Reading a file ${ file }...\n`);
+        process.stdout.write(`${ sentences.length } sentences found\n\n`);
 
-        sentences.forEach( (sentence) => {
+        sentences.forEach( sentence => {
           
           // Get words of the selected sentence
-          let words = _.compact(sentence.replace(/[.,?!“”":;/]|- |--|''/g,' ').replace(/ +(?= )/g,'').split(' ').map( (w) => { return (w.toUpperCase() != w) ? w.toLowerCase() : w } ));
-
-          // Make an 'wordsArr' array of every word with 'word', 'sentence' where this word is used and 'file' where the word is used
-          words.forEach( (word) => {
-            wordsArr.push([word, sentence, file])
-          });
+          _.compact(sentence.replace(/[.,?!“”":;/]|- |--|''/g, ' ')
+            .replace(/ +(?= )/g, '')
+            .split(' ')
+            .map( w => (w.toUpperCase() != w) ? w.toLowerCase() : w ))
+            // Make an 'wordsArr' array of every word with 'word', 'sentence' where this word is used and 'file' where the word is used
+            .forEach( word => wordsArr.push([word, sentence, file]));
         });
 
         // Counter which prevents premature exit from the 'forEach' loop
@@ -282,7 +275,7 @@ fs.readdir(docsDir, (err, files) => {
     });
 
   } else {
-    process.stdout.write(`Can not be found ${docsDir} directory or files in it\n`);
+    process.stdout.write(`Can not be found ${ docsDir } directory or files in it\n`);
     process.exit();
   }
 });

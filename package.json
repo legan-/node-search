@@ -1,0 +1,25 @@
+{
+  "name": "node-search",
+  "version": "1.1.0",
+  "description": "Search for the most frequently used words in documents from ./docs directory.",
+  "main": "app.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "open": "^0.0.5",
+    "underscore": "^1.8.3",
+    "bootstrap": "^3.3.7",
+    "lodash": "^4.17.4",
+    "jquery": "^3.2.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/legan-/node-search.git"
+  },
+  "bugs": {
+    "url": "https://github.com/legan-/node-search/issues"
+  },
+  "homepage": "https://github.com/legan-/node-search#readme"
+}
