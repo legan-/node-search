@@ -1,21 +1,21 @@
 # Search
 
-Search for the most frequently used words in documents from *./docs* directory.
+Search for the most frequently used words in documents from _./docs_ directory.
 
 **Tech Stack:**
 
-* ES6
-* jQuery
-* Node.js
-* npm
+- ES6
+- jQuery
+- Node.js
+- npm
 
 ## Getting Started
 
 **Installing:**
 
-`npm i`
+`yarn install`
 
 \
 **Running app:**
 
-`node app.js`
+`yarn start`
