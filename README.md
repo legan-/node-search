@@ -11,7 +11,7 @@ Search for the most frequently used words in documents from _./docs_ directory.
 
 ## Getting Started
 
-**Installing:**
+**Installation:**
 
 `yarn install`
 
