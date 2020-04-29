@@ -4,7 +4,7 @@
   "description": "Search for the most frequently used words in documents from ./docs directory.",
   "dependencies": {
     "bootstrap": "^3.3.7",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.10",
     "open": "^0.0.5",
     "underscore": "^1.9.1"
